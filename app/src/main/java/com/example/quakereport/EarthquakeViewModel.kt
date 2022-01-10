@@ -21,7 +21,6 @@ class EarthquakeViewModel : ViewModel() {
     }
 
     private fun loadEarthquakes() {
-        Log.d("EarthquakeViewModel", "loadEarthquakes launching.")
         viewModelScope.launch {
             val result = QueryUtils.extractEarthquakes()
 

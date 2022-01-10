@@ -7,13 +7,11 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import java.util.concurrent.Executors
