@@ -29,7 +29,7 @@ class EarthquakeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.earthquake_activity)
 
-        val isConnected = isInternetAvailable(this)
+        val isConnected = isInternetAvailable()
 
         if (isConnected) populateList()
         else {
@@ -73,7 +73,7 @@ class EarthquakeActivity : AppCompatActivity() {
         })
     }
 
-    private fun isInternetAvailable(context: Context): Boolean {
+    private fun isInternetAvailable(): Boolean {
         val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         var isConnected: Boolean = false

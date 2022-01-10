@@ -36,7 +36,7 @@ class EarthquakeAdapter(context: Context, earthquakes: List<Earthquake>) :
 
         magnitudeCircle.setColor(magnitudeColour)
 
-        val baseLocation: String = currentEarthquake.mLocation as String
+        val baseLocation: String = currentEarthquake.mLocation
         var splitIndex = baseLocation.indexOf(" of ")
 
         var locationOffset = ""
@@ -44,7 +44,7 @@ class EarthquakeAdapter(context: Context, earthquakes: List<Earthquake>) :
 
         if (splitIndex == -1) {
             locationOffset = context.getString(R.string.near)
-            primaryLocation = currentEarthquake.mLocation as String
+            primaryLocation = currentEarthquake.mLocation
         } else {
             splitIndex += 4
             locationOffset = baseLocation.substring(0, splitIndex)
@@ -60,11 +60,11 @@ class EarthquakeAdapter(context: Context, earthquakes: List<Earthquake>) :
         primaryLocationView.text = primaryLocation
 
         val dateView: TextView = listItemView.findViewById(R.id.date) as TextView
-        val formattedDate = formatDate(currentEarthquake.mDate as Long)
+        val formattedDate = formatDate(currentEarthquake.mDate)
         dateView.text = formattedDate
 
         val timeView: TextView = listItemView.findViewById(R.id.time) as TextView
-        val formattedTime = formatTime(currentEarthquake.mDate as Long)
+        val formattedTime = formatTime(currentEarthquake.mDate)
         timeView.text = formattedTime
 
         return listItemView
