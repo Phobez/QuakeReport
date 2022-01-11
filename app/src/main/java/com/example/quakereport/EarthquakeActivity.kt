@@ -5,8 +5,8 @@ import android.content.Intent
 import android.net.*
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ListView
 import android.widget.ProgressBar
@@ -14,7 +14,7 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import java.util.concurrent.Executors
+import com.example.quakereport.databinding.EarthquakeActivityBinding
 
 class EarthquakeActivity : AppCompatActivity() {
 
@@ -22,22 +22,37 @@ class EarthquakeActivity : AppCompatActivity() {
         private val LOG_TAG = EarthquakeActivity::class.qualifiedName
     }
 
-    private val executor = Executors.newSingleThreadExecutor()
-    private val handler = Handler(Looper.getMainLooper())
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.earthquake_activity)
+
+        val binding = EarthquakeActivityBinding.inflate(layoutInflater)
 
         val isConnected = isInternetAvailable()
 
         if (isConnected) populateList()
         else {
-            (findViewById<ProgressBar>(R.id.progressBar)).visibility = View.GONE
-            val emptyView: TextView = findViewById(R.id.empty_list_item)
+            binding.progressBar.visibility = View.GONE
+            val emptyView: TextView = binding.emptyListItem
             emptyView.text = getString(R.string.no_internet_connection)
             emptyView.visibility = View.VISIBLE
         }
+
+        setContentView(binding.root)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        if (id == R.id.action_settings) {
+            val settingsIntent = Intent(this, SettingsActivity::class.java)
+            startActivity(settingsIntent)
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun populateList() {

@@ -1,5 +1,6 @@
 package com.example.quakereport
 
+import android.net.Uri
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -38,16 +39,25 @@ object QueryUtils {
     private const val EMPTY_JSON_RESPONSE =
         "{\"type\":\"FeatureCollection\",\"metadata\":{\"generated\":1462295443000,\"url\":\"http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2016-01-01&endtime=2016-01-31&minmag=6&limit=10\",\"title\":\"USGS Earthquakes\",\"status\":200,\"api\":\"1.5.2\",\"limit\":10,\"offset\":1,\"count\":10},\"features\":[]}"
 
+    private const val USGS_REQUEST_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query"
+
     /**
      * Return a list of [Earthquake] objects that has been built up from
      * parsing a JSON response.
      */
-    suspend fun extractEarthquakes(): ArrayList<Earthquake> {
+    suspend fun extractEarthquakes(minMagnitude: String, orderBy: String): ArrayList<Earthquake> {
         // Create an empty ArrayList that we can start adding earthquakes to
         val earthquakes = ArrayList<Earthquake>()
 
-        val url =
-            createUrl("https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10")
+        val baseUri = Uri.parse(USGS_REQUEST_URL)
+        val uriBuilder = baseUri.buildUpon()
+
+        uriBuilder.appendQueryParameter("format", "geojson")
+        uriBuilder.appendQueryParameter("limit", "10")
+        uriBuilder.appendQueryParameter("minmag", minMagnitude)
+        uriBuilder.appendQueryParameter("orderby", orderBy)
+
+        val url = createUrl(uriBuilder.toString())
 
         var jsonResponse: String? = null
 
